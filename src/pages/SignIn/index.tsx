@@ -16,7 +16,7 @@ import { useNavigate, Link } from "react-router-dom";
 export default function SignIn() {
   const api = useApi();
   const navigate = useNavigate();
-  const { setToken } = useContext(AppContext);
+  const { setSession } = useContext(AppContext);
   const { loading, execute } = useHandleApiRequest();
 
   const {
@@ -31,7 +31,7 @@ export default function SignIn() {
     try {
       const data = await execute(() => api.post("/auth/local", body));
 
-      setToken(data?.jwt);
+      setSession(data?.jwt, data?.user);
       navigate("/");
       alert("Logado com sucesso");
     } catch (error) {

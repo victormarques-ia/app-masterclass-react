@@ -1,3 +1,5 @@
+import UserInterface from "./UserInterface";
+
 export default interface PostInterface {
   id: number;
   attributes: {
@@ -5,5 +7,9 @@ export default interface PostInterface {
     description: string;
     createdAt: string;
     updatedAt: string;
+  };
+  user: {
+    id: number;
+    attributes: Partial<UserInterface>;
   };
 }
