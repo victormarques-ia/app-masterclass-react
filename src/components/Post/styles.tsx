@@ -12,6 +12,14 @@ const PostCard = styled.div`
       border: 1px solid ${theme.colors.divider};
 
       border-radius: ${theme.radius};
+
+      width: 100%;
+
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.7;
+      }
     `;
   }}
 `;
@@ -25,4 +33,11 @@ const PostContent = styled.p`
   font-size: ${(props) => props.theme.fontSizes.small};
 `;
 
-export { PostCard, PostTitle, PostContent };
+const PostDate = styled.p`
+  font-size: ${(props) => props.theme.fontSizes.xsmall};
+  color: ${(props) => props.theme.colors.secondary};
+
+  padding-top: 10px;
+`;
+
+export { PostCard, PostTitle, PostContent, PostDate };

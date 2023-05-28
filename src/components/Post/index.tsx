@@ -1,15 +1,18 @@
-import { PostCard, PostContent, PostTitle } from "./styles";
+import { PostCard, PostContent, PostDate, PostTitle } from "./styles";
 
 interface PostProps {
   title: string;
   content: string;
+  date: string;
+  onClick: () => void;
 }
 
-export default function Post({ title, content }: PostProps) {
+export default function Post({ title, content, date, onClick }: PostProps) {
   return (
-    <PostCard>
+    <PostCard onClick={onClick}>
       <PostTitle>{title}</PostTitle>
       <PostContent>{content}</PostContent>
+      <PostDate>{new Date(date).toLocaleString()}</PostDate>
     </PostCard>
   );
 }
