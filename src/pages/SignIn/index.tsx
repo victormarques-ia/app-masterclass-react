@@ -3,7 +3,6 @@ import Input from "../../components/Input";
 import { Container } from "./styles";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import api from "../../api";
 import { useHandleApiRequest } from "../../hooks/useHandleApiRequest";
 import Form from "../../components/Form";
 import signInFormSchema, {
@@ -11,8 +10,10 @@ import signInFormSchema, {
 } from "../../utils/schemas/signInFormSchema";
 import { useContext } from "react";
 import { AppContext } from "../../contexts/AppContext";
+import useApi from "../../hooks/useApi";
 
 export default function SignIn() {
+  const api = useApi();
   const { setToken } = useContext(AppContext);
   const { loading, execute } = useHandleApiRequest();
 
@@ -26,7 +27,7 @@ export default function SignIn() {
 
   const onSubmit: SubmitHandler<SignInFormType> = async (body) => {
     try {
-      const data = await execute(() => api().post("/auth/local", body));
+      const data = await execute(() => api.post("/auth/local", body));
 
       setToken(data?.jwt);
       alert("Logado com sucesso");

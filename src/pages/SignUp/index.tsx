@@ -6,13 +6,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import signUpFormSchema, {
   SignUpFormType,
 } from "../../utils/schemas/signUpFormSchema";
-import api from "../../api";
 import { useHandleApiRequest } from "../../hooks/useHandleApiRequest";
 import Form from "../../components/Form";
 import { AppContext } from "../../contexts/AppContext";
 import { useContext } from "react";
+import useApi from "../../hooks/useApi";
 
 export default function SignUp() {
+  const api = useApi();
   const { setToken } = useContext(AppContext);
   const { loading, execute } = useHandleApiRequest();
 
@@ -26,9 +27,7 @@ export default function SignUp() {
 
   const onSubmit: SubmitHandler<SignUpFormType> = async (body) => {
     try {
-      const data = await execute(() =>
-        api().post("/auth/local/register", body)
-      );
+      const data = await execute(() => api.post("/auth/local/register", body));
 
       setToken(data?.jwt);
       alert("Conta criada com sucesso");
