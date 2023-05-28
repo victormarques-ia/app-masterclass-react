@@ -1,5 +1,10 @@
 import RenderPosts from "../../components/RenderPosts";
+import { Container } from "./styles";
 
 export default function Home() {
-  return <RenderPosts />;
+  return (
+    <Container>
+      <RenderPosts />
+    </Container>
+  );
 }

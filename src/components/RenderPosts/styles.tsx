@@ -10,8 +10,6 @@ const Container = styled.div`
 
   min-height: 100%;
   max-width: ${(props) => props.theme.breakpoints.md}px;
-
-  padding: 80px 0px;
 `;
 
 export { Container };
