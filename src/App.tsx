@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import { AppContext, AppProvider } from "./contexts/AppContext";
 import { useContext } from "react";
 import Layout from "./components/Layout";
+import MyPosts from "./pages/MyPosts";
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const { token } = useContext(AppContext);
@@ -45,11 +46,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />,
+        Component: Home,
       },
       {
         path: "my-posts",
-        element: <div>My posts</div>,
+        Component: MyPosts,
       },
     ],
   },
