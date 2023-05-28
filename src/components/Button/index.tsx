@@ -8,16 +8,18 @@ const Button = styled.button<{
 
     const isPrimary = variant === "primary";
 
-    let backgroundColor = isPrimary ? theme.colors.primary : "white";
-    let color = isPrimary ? theme.colors.background : theme.colors.primary;
-    let borderColor = `1px solid ${theme.colors.primary}`;
+    const backgroundColor = isPrimary ? theme.colors.primary : "white";
+    const color = isPrimary ? theme.colors.background : theme.colors.primary;
+    const borderColor = `1px solid ${theme.colors.primary}`;
 
-    let hoverBackgroundColor = isPrimary
+    const hoverBackgroundColor = isPrimary
       ? theme.colors.secondary
       : theme.colors.background;
-    let hoverBorderColor = `1px solid ${theme.colors.secondary}`;
+    const hoverBorderColor = `1px solid ${theme.colors.secondary}`;
 
     return css`
+      width: 100%;
+
       font-size: ${theme.fontSizes.small};
       padding: 10px 20px;
       border-radius: ${theme.radius};
