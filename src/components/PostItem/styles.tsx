@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-const PostCard = styled.div`
+const PostItemCard = styled.div`
   ${(props) => {
     const { theme } = props;
 
@@ -24,20 +24,30 @@ const PostCard = styled.div`
   }}
 `;
 
-const PostTitle = styled.h2`
+const PostItemTitle = styled.h2`
   color: ${(props) => props.theme.colors.primary};
   font-size: ${(props) => props.theme.fontSizes.medium};
+
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 
-const PostContent = styled.p`
+const PostItemContent = styled.p`
   font-size: ${(props) => props.theme.fontSizes.small};
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 
-const PostDate = styled.p`
+const PostItemDate = styled.p`
   font-size: ${(props) => props.theme.fontSizes.xsmall};
   color: ${(props) => props.theme.colors.secondary};
 
   padding-top: 10px;
 `;
 
-export { PostCard, PostTitle, PostContent, PostDate };
+export { PostItemCard, PostItemTitle, PostItemContent, PostItemDate };

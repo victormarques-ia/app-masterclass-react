@@ -11,6 +11,7 @@ import { AppContext, AppProvider } from "./contexts/AppContext";
 import { useContext } from "react";
 import Layout from "./components/Layout";
 import MyPosts from "./pages/MyPosts";
+import Post from "./pages/Post";
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const { token } = useContext(AppContext);
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "my-posts",
         Component: MyPosts,
+      },
+      {
+        path: "/posts/:id",
+        Component: Post,
       },
     ],
   },

@@ -6,9 +6,12 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 
-  min-height: 100%;
+  margin: 0 auto;
 
-  padding: 80px 20px;
+  min-height: 100%;
+  max-width: ${(props) => props.theme.breakpoints.md}px;
+
+  padding: 80px 0px;
 `;
 
 export { Container };
