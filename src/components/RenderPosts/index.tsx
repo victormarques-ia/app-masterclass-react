@@ -1,9 +1,11 @@
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import useApi from "../../hooks/useApi";
 import { useHandleApiRequest } from "../../hooks/useHandleApiRequest";
-import Post from "../../components/Post";
+import PostItem from "../PostItem";
 import { Container } from "./styles";
 import PostInterface from "../../interfaces/PostInterface";
+
+import { useNavigate } from "react-router-dom";
 
 interface RenderPostsProps {
   me?: boolean;
@@ -15,15 +17,25 @@ export default function RenderPosts({ me = false }: RenderPostsProps) {
     data: PostInterface[];
   }>();
 
-  useEffect(() => {
-    execute(() =>
-      api.get("/posts", {
-        params: {
-          me,
-        },
-      })
-    );
+  const navigate = useNavigate();
+
+  const getPosts = useCallback(async () => {
+    try {
+      await execute(() =>
+        api.get("/posts", {
+          params: {
+            me,
+          },
+        })
+      );
+    } catch (error) {
+      alert("Erro ao buscar posts");
+    }
   }, [api, execute, me]);
+
+  useEffect(() => {
+    getPosts();
+  }, [getPosts]);
 
   // Memoize the sorted posts for avoiding unnecessary re-renders
   const sortedPosts = useMemo(() => {
@@ -44,13 +56,13 @@ export default function RenderPosts({ me = false }: RenderPostsProps) {
             <p>Nenhum post encontrado</p>
           ) : (
             sortedPosts.map((post) => (
-              <Post
+              <PostItem
                 key={post.id}
                 title={post.attributes.title}
                 content={post.attributes.description}
                 date={post.attributes.createdAt}
                 onClick={() => {
-                  console.log("click");
+                  navigate(`/posts/${post.id}`);
                 }}
               />
             ))
