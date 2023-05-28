@@ -6,11 +6,7 @@ interface AppContextProps {
   removeToken: () => void;
 }
 
-const AppContext = createContext<AppContextProps>({
-  token: null,
-  setToken: () => {},
-  removeToken: () => {},
-});
+const AppContext = createContext<AppContextProps>({} as AppContextProps);
 
 interface AppProviderProps {
   children: ReactNode;
