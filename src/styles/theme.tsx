@@ -9,6 +9,7 @@ export interface ThemeInterface {
   };
   fonts: string[];
   fontSizes: {
+    xsmall: string;
     small: string;
     medium: string;
     large: string;
@@ -40,6 +41,7 @@ const theme: ThemeInterface = {
   },
   fonts: ["Roboto", "Arial", "sans-serif"],
   fontSizes: {
+    xsmall: "0.8em",
     small: "1em",
     medium: "2em",
     large: "3em",

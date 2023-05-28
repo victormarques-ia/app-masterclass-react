@@ -11,12 +11,7 @@ export default createGlobalStyle`
     box-sizing: border-box;
   }
 
-  #root {
-    max-width:${(props) => `${props.theme.breakpoints.xl}px`};
-    margin: 0 auto; 
-    padding: 0 20px; 
-  }
-
+ 
   body {
     font-family: ${(props) => props.theme.fonts.join(", ")};
     background-color: ${(props) => props.theme.colors.background};
