@@ -1,13 +1,14 @@
 import { useState } from "react";
-
 import axios, { AxiosError, AxiosResponse } from "axios";
 
-export function useHandleApiRequest<T = any>() {
+type ApiRequestFunction<T> = () => Promise<AxiosResponse<T>>;
+
+export function useHandleApiRequest<T>() {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<AxiosError | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const execute = async (requestFunction: () => Promise<AxiosResponse<T>>) => {
+  const execute = async (requestFunction: ApiRequestFunction<T>) => {
     setLoading(true);
     setData(null);
     setError(null);
