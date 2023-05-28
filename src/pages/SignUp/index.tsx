@@ -8,12 +8,15 @@ import signUpFormSchema, {
 } from "../../utils/schemas/signUpFormSchema";
 import { useHandleApiRequest } from "../../hooks/useHandleApiRequest";
 import Form from "../../components/Form";
-import { AppContext } from "../../contexts/AppContext";
+
 import { useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { AppContext } from "../../contexts/AppContext";
 import useApi from "../../hooks/useApi";
 
 export default function SignUp() {
   const api = useApi();
+  const navigate = useNavigate();
   const { setToken } = useContext(AppContext);
   const { loading, execute } = useHandleApiRequest();
 
@@ -30,6 +33,7 @@ export default function SignUp() {
       const data = await execute(() => api.post("/auth/local/register", body));
 
       setToken(data?.jwt);
+      navigate("/");
       alert("Conta criada com sucesso");
     } catch (error) {
       alert("Erro ao criar conta");
@@ -68,7 +72,7 @@ export default function SignUp() {
           error={errors.password?.message}
         />
 
-        <a href="/sign-in">Já tenho uma conta</a>
+        <Link to="/sign-in">Já tenho uma conta</Link>
 
         <Button type="submit" disabled={loading}>
           Criar conta
