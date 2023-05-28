@@ -18,6 +18,8 @@ const Button = styled.button<{
     let hoverBorderColor = `1px solid ${theme.colors.secondary}`;
 
     return css`
+      width: 100%;
+
       font-size: ${theme.fontSizes.small};
       padding: 10px 20px;
       border-radius: ${theme.radius};

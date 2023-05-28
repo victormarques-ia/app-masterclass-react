@@ -5,6 +5,7 @@ export interface ThemeInterface {
     background: string;
     text: string;
     divider: string;
+    error: string;
   };
   fonts: string[];
   fontSizes: {
@@ -35,6 +36,7 @@ const theme: ThemeInterface = {
     background: "#FAFAFA",
     text: "#2C3E50",
     divider: "#DDDDDD",
+    error: "#DC3545",
   },
   fonts: ["Roboto", "Arial", "sans-serif"],
   fontSizes: {
