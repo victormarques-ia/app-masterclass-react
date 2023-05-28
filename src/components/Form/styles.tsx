@@ -6,7 +6,6 @@ const StyledForm = styled.form`
   justify-content: center;
 
   width: 100%;
-  max-width: 400px;
 
   gap: 16px;
 `;

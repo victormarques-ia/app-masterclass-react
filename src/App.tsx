@@ -12,6 +12,7 @@ import { useContext } from "react";
 import Layout from "./components/Layout";
 import MyPosts from "./pages/MyPosts";
 import Post from "./pages/Post";
+import CreatePost from "./pages/CreatePost";
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const { token } = useContext(AppContext);
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: "/posts/:id",
         Component: Post,
+      },
+      {
+        path: "create-post",
+        Component: CreatePost,
       },
     ],
   },

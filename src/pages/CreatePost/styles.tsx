@@ -6,11 +6,11 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 
-  min-height: 100vh;
-  max-width: 400px;
-
   margin: 0 auto;
-  padding: 0 20px;
+
+  padding: 80px 0;
+
+  max-width: ${(props) => props.theme.breakpoints.md}px;
 `;
 
 export { Container };
