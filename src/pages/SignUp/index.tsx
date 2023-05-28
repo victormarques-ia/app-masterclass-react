@@ -17,7 +17,7 @@ import useApi from "../../hooks/useApi";
 export default function SignUp() {
   const api = useApi();
   const navigate = useNavigate();
-  const { setToken } = useContext(AppContext);
+  const { setSession } = useContext(AppContext);
   const { loading, execute } = useHandleApiRequest();
 
   const {
@@ -32,7 +32,7 @@ export default function SignUp() {
     try {
       const data = await execute(() => api.post("/auth/local/register", body));
 
-      setToken(data?.jwt);
+      setSession(data?.jwt, data?.user);
       navigate("/");
       alert("Conta criada com sucesso");
     } catch (error) {

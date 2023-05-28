@@ -10,7 +10,7 @@ import {
 import { Link, Outlet } from "react-router-dom";
 
 export default function Layout() {
-  const { removeToken } = useContext(AppContext);
+  const { clearSession } = useContext(AppContext);
 
   return (
     <>
@@ -22,7 +22,7 @@ export default function Layout() {
 
           <NavBarItemsContainer>
             <Link to="/my-posts">Meus posts</Link>
-            <Link to="/" onClick={removeToken}>
+            <Link to="/" onClick={clearSession}>
               Sair
             </Link>
           </NavBarItemsContainer>

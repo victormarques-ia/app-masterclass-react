@@ -1,42 +1,79 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useApi from "../../hooks/useApi";
 import { useHandleApiRequest } from "../../hooks/useHandleApiRequest";
 import PostInterface from "../../interfaces/PostInterface";
-import { Container, Divider } from "./styles";
+import { Container, DeletePostButton, Divider, SubContainer } from "./styles";
+import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../contexts/AppContext";
 
 export default function Post() {
+  const { user } = useContext(AppContext);
+
   const api = useApi();
-  const { loading, execute, data } = useHandleApiRequest<{
+
+  const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+
+  const {
+    loading: loadingPost,
+    execute: executeGetPost,
+    data: postData,
+  } = useHandleApiRequest<{
     data: PostInterface;
   }>();
 
-  const { id } = useParams<{ id: string }>();
+  const { loading: loadingDeletePost, execute: executeDeletePost } =
+    useHandleApiRequest();
 
   const getPost = useCallback(async () => {
     try {
-      await execute(() => api.get(`/posts/${id}`));
+      await executeGetPost(() => api.get(`/posts/${id}`));
     } catch (error) {
       alert("Erro ao buscar post");
     }
-  }, [api, execute, id]);
+  }, [api, executeGetPost, id]);
+
+  const deletePost = useCallback(async () => {
+    try {
+      await executeDeletePost(() => api.delete(`/posts/${id}`));
+
+      alert("Post deletado com sucesso!");
+      navigate("/");
+    } catch (error) {
+      alert("Erro ao deletar post");
+    }
+  }, [api, executeDeletePost, id, navigate]);
 
   useEffect(() => {
     getPost();
   }, [getPost]);
 
-  if (loading) {
+  if (loadingPost) {
     return <p>Carregando...</p>;
   }
 
   return (
     <Container>
-      {data ? (
+      {postData ? (
         <>
-          <h1>{data.data.attributes.title}</h1>
-          <h5>{new Date(data.data.attributes.createdAt).toLocaleString()}</h5>
+          <h1>{postData.data.attributes.title}</h1>
+          <SubContainer>
+            <h5>
+              {new Date(postData.data.attributes.createdAt).toLocaleString()}
+            </h5>
+            {user?.id === postData.data?.user?.id && (
+              <DeletePostButton
+                onClick={deletePost}
+                disabled={loadingDeletePost}
+              >
+                Deletar
+              </DeletePostButton>
+            )}
+          </SubContainer>
+
           <Divider />
-          <p>{data.data.attributes.description}</p>
+          <p>{postData.data.attributes.description}</p>
         </>
       ) : (
         <p>Post não encontrado!</p>

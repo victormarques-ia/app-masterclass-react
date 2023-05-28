@@ -1,9 +1,11 @@
 import { createContext, useState, ReactNode } from "react";
+import UserInterface from "../interfaces/UserInterface";
 
 interface AppContextProps {
   token: string | null;
-  setToken: (token: string) => void;
-  removeToken: () => void;
+  user: UserInterface | null;
+  setSession: (token: string, user: UserInterface) => void;
+  clearSession: () => void;
 }
 
 const AppContext = createContext<AppContextProps>({} as AppContextProps);
@@ -17,6 +19,21 @@ function AppProvider({ children }: AppProviderProps) {
     localStorage.getItem("token") || null
   );
 
+  const userLocalStorage = localStorage.getItem("user");
+  const [user, setUser] = useState<UserInterface | null>(
+    userLocalStorage ? JSON.parse(userLocalStorage) : null
+  );
+
+  const setUserInLocalStorage = (user: UserInterface) => {
+    localStorage.setItem("user", JSON.stringify(user));
+    setUser(user);
+  };
+
+  const removeUserFromLocalStorage = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+  };
+
   const setTokenInLocalStorage = (token: string) => {
     localStorage.setItem("token", token);
     setToken(token);
@@ -27,10 +44,21 @@ function AppProvider({ children }: AppProviderProps) {
     setToken(null);
   };
 
+  const setSession = (token: string, user: UserInterface) => {
+    setTokenInLocalStorage(token);
+    setUserInLocalStorage(user);
+  };
+
+  const clearSession = () => {
+    removeTokenFromLocalStorage();
+    removeUserFromLocalStorage();
+  };
+
   const contextValue: AppContextProps = {
     token,
-    setToken: setTokenInLocalStorage,
-    removeToken: removeTokenFromLocalStorage,
+    user,
+    setSession,
+    clearSession,
   };
 
   return (

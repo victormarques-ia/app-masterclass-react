@@ -38,6 +38,46 @@ const Container = styled.div`
   }};
 `;
 
+const SubContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const DeletePostButton = styled.button`
+  ${(props) => {
+    const { theme } = props;
+
+    return css`
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 10px 20px;
+
+      color: ${theme.colors.background};
+      background-color: ${theme.colors.error};
+
+      border: none;
+      border-radius: ${theme.radius};
+
+      font-size: ${theme.fontSizes.small};
+
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.8;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    `;
+  }};
+`;
+
 const Divider = styled.div`
   width: 100%;
   height: 1px;
@@ -48,4 +88,4 @@ const Divider = styled.div`
   background-color: ${(props) => props.theme.colors.divider};
 `;
 
-export { Container, Divider };
+export { Container, SubContainer, DeletePostButton, Divider };
