@@ -3,16 +3,16 @@ import Input from "../../components/Input";
 import { Container } from "./styles";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import signUpFormSchema, {
-  SignUpFormType,
-} from "../../utils/schemas/signUpFormSchema";
 import { useHandleApiRequest } from "../../hooks/useHandleApiRequest";
 import Form from "../../components/Form";
-import { AppContext } from "../../contexts/AppContext";
+import signInFormSchema, {
+  SignInFormType,
+} from "../../utils/schemas/signInFormSchema";
 import { useContext } from "react";
+import { AppContext } from "../../contexts/AppContext";
 import useApi from "../../hooks/useApi";
 
-export default function SignUp() {
+export default function SignIn() {
   const api = useApi();
   const { setToken } = useContext(AppContext);
   const { loading, execute } = useHandleApiRequest();
@@ -21,18 +21,18 @@ export default function SignUp() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignUpFormType>({
-    resolver: zodResolver(signUpFormSchema),
+  } = useForm<SignInFormType>({
+    resolver: zodResolver(signInFormSchema),
   });
 
-  const onSubmit: SubmitHandler<SignUpFormType> = async (body) => {
+  const onSubmit: SubmitHandler<SignInFormType> = async (body) => {
     try {
-      const data = await execute(() => api.post("/auth/local/register", body));
+      const data = await execute(() => api.post("/auth/local", body));
 
       setToken(data?.jwt);
-      alert("Conta criada com sucesso");
+      alert("Logado com sucesso");
     } catch (error) {
-      alert("Erro ao criar conta");
+      alert("Erro ao logar na conta");
     }
   };
 
@@ -44,21 +44,14 @@ export default function SignUp() {
             marginBottom: 16,
           }}
         >
-          Crie uma conta
+          Entrar na conta
         </h1>
 
         <Input
-          {...register("username")}
-          placeholder="Nome do usuário"
+          {...register("identifier")}
+          placeholder="Digite e-mail ou nome de usuário"
           type="text"
-          error={errors.username?.message}
-        />
-
-        <Input
-          {...register("email")}
-          placeholder="E-mail"
-          type="email"
-          error={errors.email?.message}
+          error={errors.identifier?.message}
         />
 
         <Input
@@ -68,10 +61,10 @@ export default function SignUp() {
           error={errors.password?.message}
         />
 
-        <a href="/sign-in">Já tenho uma conta</a>
+        <a href="/sign-up">Criar uma conta</a>
 
         <Button type="submit" disabled={loading}>
-          Criar conta
+          Entrar
         </Button>
       </Form>
     </Container>

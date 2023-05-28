@@ -14,8 +14,11 @@ export function useHandleApiRequest<T>() {
     setError(null);
     try {
       const response = await requestFunction();
-      setData(response.data);
-      return response;
+
+      const data = JSON.parse(JSON.stringify(response.data));
+
+      setData(data);
+      return data;
     } catch (e) {
       if (axios.isAxiosError(e)) {
         setError(e);
