@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useState, ReactNode } from "react";
 
 interface AppContextProps {
   token: string | null;
@@ -13,7 +13,9 @@ interface AppProviderProps {
 }
 
 function AppProvider({ children }: AppProviderProps) {
-  const [token, setToken] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem("token") || null
+  );
 
   const setTokenInLocalStorage = (token: string) => {
     localStorage.setItem("token", token);
@@ -24,13 +26,6 @@ function AppProvider({ children }: AppProviderProps) {
     localStorage.removeItem("token");
     setToken(null);
   };
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
 
   const contextValue: AppContextProps = {
     token,
