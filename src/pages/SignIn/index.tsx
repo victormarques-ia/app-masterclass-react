@@ -11,9 +11,11 @@ import signInFormSchema, {
 import { useContext } from "react";
 import { AppContext } from "../../contexts/AppContext";
 import useApi from "../../hooks/useApi";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function SignIn() {
   const api = useApi();
+  const navigate = useNavigate();
   const { setToken } = useContext(AppContext);
   const { loading, execute } = useHandleApiRequest();
 
@@ -30,6 +32,7 @@ export default function SignIn() {
       const data = await execute(() => api.post("/auth/local", body));
 
       setToken(data?.jwt);
+      navigate("/");
       alert("Logado com sucesso");
     } catch (error) {
       alert("Erro ao logar na conta");
@@ -61,7 +64,7 @@ export default function SignIn() {
           error={errors.password?.message}
         />
 
-        <a href="/sign-up">Criar uma conta</a>
+        <Link to="/sign-up">Criar uma conta</Link>
 
         <Button type="submit" disabled={loading}>
           Entrar
