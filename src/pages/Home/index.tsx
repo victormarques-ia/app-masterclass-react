@@ -1,35 +1,48 @@
-import { useTheme } from "styled-components";
-import Button from "../../components/Button";
+import { useEffect, useMemo } from "react";
+import useApi from "../../hooks/useApi";
+import { useHandleApiRequest } from "../../hooks/useHandleApiRequest";
 import Post from "../../components/Post";
-import Input from "../../components/Input";
+import { Container } from "./styles";
+import PostInterface from "../../interfaces/PostInterface";
 
 export default function Home() {
-  const theme = useTheme();
+  const api = useApi();
+  const { loading, execute, data } = useHandleApiRequest<{
+    data: PostInterface[];
+  }>();
+
+  useEffect(() => {
+    execute(() => api.get("/posts"));
+  }, [api, execute]);
+
+  // Memoize the sorted posts for avoiding unnecessary re-renders
+  const sortedPosts = useMemo(() => {
+    if (!data) return [];
+
+    return [...data.data].sort((a, b) =>
+      b.attributes.createdAt.localeCompare(a.attributes.createdAt)
+    );
+  }, [data]);
 
   return (
-    <div>
-      <h1
-        style={{
-          color: theme.colors.primary,
-        }}
-      >
-        Home
-      </h1>
-
-      <Post
-        title="Post Test"
-        content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium voluptatibus ad eligendi quisquam modi repellendus perspiciatis deleniti doloremque exercitationem eius dolores voluptates ipsa, quidem accusamus doloribus vel dolorum ullam sapiente?"
-      />
-
-      <Button variant="primary" onClick={() => alert("Primary")}>
-        Primary Button
-      </Button>
-      <Button variant="secondary">Secondary Button</Button>
-      <Button variant="primary" disabled>
-        Disabled primary
-      </Button>
-
-      <Input placeholder="Input Test" />
-    </div>
+    <Container>
+      {loading ? (
+        <p>Carregando...</p>
+      ) : (
+        <>
+          {sortedPosts.map((post) => (
+            <Post
+              key={post.id}
+              title={post.attributes.title}
+              content={post.attributes.description}
+              date={post.attributes.createdAt}
+              onClick={() => {
+                console.log("click");
+              }}
+            />
+          ))}
+        </>
+      )}
+    </Container>
   );
 }
