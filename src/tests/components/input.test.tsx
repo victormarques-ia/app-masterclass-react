@@ -2,8 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import Input from "../../components/Input";
 import { ThemeProvider } from "styled-components";
 import theme from "../../styles/theme";
-
-import {} from "react";
+import { vi } from "vitest";
 
 const TestWrapper = ({ children }: { children: JSX.Element }) => (
   <ThemeProvider theme={theme}>{children}</ThemeProvider>
@@ -44,7 +43,7 @@ describe("Input component", () => {
   });
 
   it("calls onChange handler when value is changed", () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(
       <TestWrapper>
         <Input onChange={handleChange} />
