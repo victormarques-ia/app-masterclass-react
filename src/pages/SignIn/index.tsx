@@ -55,6 +55,7 @@ export default function SignIn() {
           placeholder="Digite e-mail ou nome de usuário"
           type="text"
           error={errors.identifier?.message}
+          data-cy="identifier"
         />
 
         <Input
@@ -62,11 +63,12 @@ export default function SignIn() {
           placeholder="Senha"
           type="password"
           error={errors.password?.message}
+          data-cy="password"
         />
 
         <Link to="/sign-up">Criar uma conta</Link>
 
-        <Button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading} data-cy="submit-button">
           Entrar
         </Button>
       </Form>
