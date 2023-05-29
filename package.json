@@ -5,11 +5,18 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "testing": "vite --mode testing",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
     "preview": "vite preview",
-    "test": "vitest",
-    "test:coverage": "pnpm test -- --coverage"
+    "test": "vitest --mode testing",
+    "test:coverage": "pnpm test -- --coverage",
+    "test:show-coverage": "open ./coverage/index.html",
+    "cy:open-e2e": "cypress open open --e2e --browser electron",
+    "cy:run-e2e": "cypress run --e2e",
+    "cy:e2e-interactive": "start-server-and-test testing http-get://localhost:3000 cy:open-e2e",
+    "cy:e2e-headless": "start-server-and-test testing http-get://localhost:3000 cy:run-e2e",
+    "cy:show-coverage": "open ./cypress-coverage/lcov-report/index.html"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.0",
@@ -22,9 +29,12 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@cypress/code-coverage": "^3.10.6",
+    "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@types/jest": "^29.5.1",
+    "@types/node": "^20.2.5",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@types/styled-components": "^5.1.26",
@@ -33,12 +43,15 @@
     "@typescript-eslint/parser": "^5.57.1",
     "@vitejs/plugin-react": "^4.0.0",
     "@vitest/coverage-c8": "^0.31.1",
+    "cypress": "^12.13.0",
     "eslint": "^8.38.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
     "jsdom": "^22.1.0",
+    "start-server-and-test": "^2.0.0",
     "typescript": "^5.0.2",
     "vite": "^4.3.2",
+    "vite-plugin-istanbul": "^4.1.0",
     "vitest": "^0.31.1"
   }
 }
