@@ -9,7 +9,7 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
     "preview": "vite preview",
-    "test": "vitest --mode testing",
+    "test": "vitest run --mode testing",
     "test:coverage": "pnpm test -- --coverage",
     "test:show-coverage": "open ./coverage/index.html",
     "cy:open-e2e": "cypress open open --e2e --browser electron",
