@@ -19,9 +19,7 @@ export default function Post() {
     loading: loadingPost,
     execute: executeGetPost,
     data: postData,
-  } = useHandleApiRequest<{
-    data: PostInterface;
-  }>();
+  } = useHandleApiRequest<PostInterface>();
 
   const { loading: loadingDeletePost, execute: executeDeletePost } =
     useHandleApiRequest();
@@ -39,7 +37,7 @@ export default function Post() {
       await executeDeletePost(() => api.delete(`/posts/${id}`));
 
       alert("Post deletado com sucesso!");
-      navigate("/");
+      navigate(-1);
     } catch (error) {
       alert("Erro ao deletar post");
     }
@@ -57,12 +55,10 @@ export default function Post() {
     <Container>
       {postData ? (
         <>
-          <h1>{postData.data.attributes.title}</h1>
+          <h1>{postData.title}</h1>
           <SubContainer>
-            <h5>
-              {new Date(postData.data.attributes.createdAt).toLocaleString()}
-            </h5>
-            {user?.id === postData.data?.user?.id && (
+            <h5>{new Date(postData.createdAt).toLocaleString()}</h5>
+            {user?.id === postData.authorId && (
               <DeletePostButton
                 onClick={deletePost}
                 disabled={loadingDeletePost}
@@ -73,7 +69,7 @@ export default function Post() {
           </SubContainer>
 
           <Divider />
-          <p>{postData.data.attributes.description}</p>
+          <p>{postData.content}</p>
         </>
       ) : (
         <p>Post não encontrado!</p>

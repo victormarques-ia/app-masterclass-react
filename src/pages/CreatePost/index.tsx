@@ -30,11 +30,7 @@ export default function CreatePost() {
 
   const onSubmit: SubmitHandler<PostFormType> = async (body) => {
     try {
-      await execute(() =>
-        api.post("/posts", {
-          data: body,
-        })
-      );
+      await execute(() => api.post("/posts", body));
 
       navigate("/");
       alert("Post criado com sucesso");
@@ -62,9 +58,9 @@ export default function CreatePost() {
         />
 
         <TextArea
-          {...register("description")}
+          {...register("content")}
           placeholder="Digite o conteúdo do post"
-          error={errors.description?.message}
+          error={errors.content?.message}
         />
 
         <Button type="submit" disabled={loading}>

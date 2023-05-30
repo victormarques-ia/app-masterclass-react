@@ -4,7 +4,7 @@ const postFormSchema = z.object({
   title: z
     .string()
     .min(5, { message: "Título deve ter no mínimo 5 caracteres" }),
-  description: z
+  content: z
     .string()
     .min(10, { message: "Conteúdo deve ter no mínimo 10 caracteres" }),
 });

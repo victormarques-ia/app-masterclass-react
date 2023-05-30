@@ -29,9 +29,9 @@ export default function SignIn() {
 
   const onSubmit: SubmitHandler<SignInFormType> = async (body) => {
     try {
-      const data = await execute(() => api.post("/auth/local", body));
+      const data = await execute(() => api.post("/auth/sign-in", body));
 
-      setSession(data?.jwt, data?.user);
+      setSession(data?.accessToken, data?.user);
       navigate("/");
       alert("Logado com sucesso");
     } catch (error) {
@@ -51,11 +51,11 @@ export default function SignIn() {
         </h1>
 
         <Input
-          {...register("identifier")}
+          {...register("email")}
           placeholder="Digite e-mail ou nome de usuário"
           type="text"
-          error={errors.identifier?.message}
-          data-cy="identifier"
+          error={errors.email?.message}
+          data-cy="email"
         />
 
         <Input

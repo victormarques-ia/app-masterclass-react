@@ -30,9 +30,9 @@ export default function SignUp() {
 
   const onSubmit: SubmitHandler<SignUpFormType> = async (body) => {
     try {
-      const data = await execute(() => api.post("/auth/local/register", body));
+      const data = await execute(() => api.post("/auth/sign-up", body));
 
-      setSession(data?.jwt, data?.user);
+      setSession(data?.accessToken, data?.user);
       navigate("/");
       alert("Conta criada com sucesso");
     } catch (error) {
@@ -52,10 +52,10 @@ export default function SignUp() {
         </h1>
 
         <Input
-          {...register("username")}
+          {...register("name")}
           placeholder="Nome do usuário"
           type="text"
-          error={errors.username?.message}
+          error={errors.name?.message}
         />
 
         <Input

@@ -14,6 +14,7 @@ const PostItemCard = styled.div`
       border-radius: ${theme.radius};
 
       width: 100%;
+      min-width: 100%;
 
       cursor: pointer;
 
