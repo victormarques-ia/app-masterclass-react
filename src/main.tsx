@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
+import App from "./App";
 import GlobalStyle from "./styles/global";
-import theme from "./styles/theme.tsx";
+import theme from "./styles/theme";
 import { ThemeProvider } from "styled-components";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
