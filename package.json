@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run --mode testing",
-    "test:coverage": "npm test -- --coverage",
+    "test:coverage": "pnpm test -- --coverage",
     "test:show-coverage": "open ./coverage/index.html",
     "cy:open-e2e": "cypress open open --e2e --browser electron",
     "cy:run-e2e": "cypress run --e2e",
