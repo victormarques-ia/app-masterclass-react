@@ -1,22 +1,24 @@
+"use client";
+
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import { Container } from "./styles";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import signUpFormSchema, {
-  SignUpFormType,
-} from "../../utils/schemas/signUpFormSchema";
 import { useHandleApiRequest } from "../../hooks/useHandleApiRequest";
 import Form from "../../components/Form";
-
+import signInFormSchema, {
+  SignInFormType,
+} from "../../utils/schemas/signInFormSchema";
 import { useContext } from "react";
-import { useNavigate, Link } from "react-router-dom";
 import { AppContext } from "../../contexts/AppContext";
 import useApi from "../../hooks/useApi";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-export default function SignUp() {
+export default function SignIn() {
   const api = useApi();
-  const navigate = useNavigate();
+  const router = useRouter();
   const { setSession } = useContext(AppContext);
   const { loading, execute } = useHandleApiRequest();
 
@@ -24,19 +26,19 @@ export default function SignUp() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignUpFormType>({
-    resolver: zodResolver(signUpFormSchema),
+  } = useForm<SignInFormType>({
+    resolver: zodResolver(signInFormSchema),
   });
 
-  const onSubmit: SubmitHandler<SignUpFormType> = async (body) => {
+  const onSubmit: SubmitHandler<SignInFormType> = async (body) => {
     try {
-      const data = await execute(() => api.post("/auth/sign-up", body));
+      const data = await execute(() => api.post("/auth/sign-in", body));
 
       setSession(data?.accessToken, data?.user);
-      navigate("/");
-      alert("Conta criada com sucesso");
+      router.replace("/home");
+      alert("Logado com sucesso");
     } catch (error) {
-      alert("Erro ao criar conta");
+      alert("Erro ao logar na conta");
     }
   };
 
@@ -48,21 +50,15 @@ export default function SignUp() {
             marginBottom: 16,
           }}
         >
-          Crie uma conta
+          Entrar na conta
         </h1>
 
         <Input
-          {...register("name")}
-          placeholder="Nome do usuário"
-          type="text"
-          error={errors.name?.message}
-        />
-
-        <Input
           {...register("email")}
-          placeholder="E-mail"
-          type="email"
+          placeholder="Digite e-mail ou nome de usuário"
+          type="text"
           error={errors.email?.message}
+          data-cy="email"
         />
 
         <Input
@@ -70,12 +66,13 @@ export default function SignUp() {
           placeholder="Senha"
           type="password"
           error={errors.password?.message}
+          data-cy="password"
         />
 
-        <Link to="/sign-in">Já tenho uma conta</Link>
+        <Link href="/sign-up">Criar uma conta</Link>
 
-        <Button type="submit" disabled={loading}>
-          Criar conta
+        <Button type="submit" disabled={loading} data-cy="submit-button">
+          Entrar
         </Button>
       </Form>
     </Container>

@@ -1,19 +1,28 @@
-import { useCallback, useContext, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import useApi from "../../hooks/useApi";
-import { useHandleApiRequest } from "../../hooks/useHandleApiRequest";
-import PostInterface from "../../interfaces/PostInterface";
-import { Container, DeletePostButton, Divider, SubContainer } from "./styles";
-import { useNavigate } from "react-router-dom";
-import { AppContext } from "../../contexts/AppContext";
+"use client";
 
-export default function Post() {
+import { useCallback, useContext, useEffect } from "react";
+
+import useApi from "../../../../hooks/useApi";
+import { useHandleApiRequest } from "../../../../hooks/useHandleApiRequest";
+import PostInterface from "../../../../interfaces/PostInterface";
+import { Container, DeletePostButton, Divider, SubContainer } from "./styles";
+
+import { AppContext } from "../../../../contexts/AppContext";
+import { useRouter } from "next/navigation";
+
+interface PostProps {
+  params: {
+    id: string;
+  };
+}
+
+export default function Post({ params }: PostProps) {
   const { user } = useContext(AppContext);
 
   const api = useApi();
 
-  const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>();
+  const router = useRouter();
+  const { id } = params;
 
   const {
     loading: loadingPost,
@@ -37,11 +46,11 @@ export default function Post() {
       await executeDeletePost(() => api.delete(`/posts/${id}`));
 
       alert("Post deletado com sucesso!");
-      navigate(-1);
+      router.back();
     } catch (error) {
       alert("Erro ao deletar post");
     }
-  }, [api, executeDeletePost, id, navigate]);
+  }, [api, executeDeletePost, id, router]);
 
   useEffect(() => {
     getPost();

@@ -1,3 +1,5 @@
+"use client";
+
 import { useContext } from "react";
 import { AppContext } from "../../contexts/AppContext";
 import {
@@ -6,31 +8,29 @@ import {
   NavBarContainer,
   NavBarItemsContainer,
 } from "./styles";
+import Image from "next/image";
+import Link from "next/link";
 
-import { Link, Outlet } from "react-router-dom";
-
-export default function Layout() {
+export default function Layout({ children }: { children: React.ReactNode }) {
   const { clearSession } = useContext(AppContext);
 
   return (
     <>
       <NavBar>
         <NavBarContainer>
-          <Link to="/">
-            <img src="/logo.png" alt="Logo" />
+          <Link href="/">
+            <Image src="/logo.png" alt="Logo" width={60} height={60} priority />
           </Link>
 
           <NavBarItemsContainer>
-            <Link to="/my-posts">Meus posts</Link>
-            <Link to="/" onClick={clearSession}>
+            <Link href="/home/my-posts">Meus posts</Link>
+            <Link href="/" onClick={clearSession}>
               Sair
             </Link>
           </NavBarItemsContainer>
         </NavBarContainer>
       </NavBar>
-      <Container>
-        <Outlet />
-      </Container>
+      <Container>{children}</Container>
     </>
   );
 }
