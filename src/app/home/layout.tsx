@@ -11,15 +11,15 @@ export default function HomeLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { token, loading } = useContext(AppContext);
+  const { token } = useContext(AppContext);
 
   useEffect(() => {
-    if (!loading && !token) {
+    if (!token) {
       router.replace("/sign-in");
     }
-  }, [router, token, loading]);
+  }, [router, token]);
 
-  if (loading || !token) {
+  if (!token) {
     return <>Loading...</>;
   }
 
