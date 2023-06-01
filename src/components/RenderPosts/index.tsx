@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useEffect, useMemo } from "react";
 import useApi from "../../hooks/useApi";
 import { useHandleApiRequest } from "../../hooks/useHandleApiRequest";
@@ -5,7 +7,7 @@ import PostItem from "../PostItem";
 import { Container } from "./styles";
 import PostInterface from "../../interfaces/PostInterface";
 
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 interface RenderPostsProps {
   me?: boolean;
@@ -13,21 +15,13 @@ interface RenderPostsProps {
 
 export default function RenderPosts({ me = false }: RenderPostsProps) {
   const api = useApi();
-  const { loading, execute, data } = useHandleApiRequest<{
-    data: PostInterface[];
-  }>();
+  const { loading, execute, data } = useHandleApiRequest<PostInterface[]>();
 
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const getPosts = useCallback(async () => {
     try {
-      await execute(() =>
-        api.get("/posts", {
-          params: {
-            me,
-          },
-        })
-      );
+      await execute(() => api.get(`/posts${me ? "/me" : ""}`));
     } catch (error) {
       alert("Erro ao buscar posts");
     }
@@ -37,13 +31,11 @@ export default function RenderPosts({ me = false }: RenderPostsProps) {
     getPosts();
   }, [getPosts]);
 
-  // Memoize the sorted posts for avoiding unnecessary re-renders
+  // Memorize the sorted posts for avoiding unnecessary re-renders
   const sortedPosts = useMemo(() => {
     if (!data) return [];
 
-    return [...data.data].sort((a, b) =>
-      b.attributes.createdAt.localeCompare(a.attributes.createdAt)
-    );
+    return data.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   }, [data]);
 
   return (
@@ -58,11 +50,11 @@ export default function RenderPosts({ me = false }: RenderPostsProps) {
             sortedPosts.map((post) => (
               <PostItem
                 key={post.id}
-                title={post.attributes.title}
-                content={post.attributes.description}
-                date={post.attributes.createdAt}
+                title={post.title}
+                content={post.content}
+                date={post.createdAt}
                 onClick={() => {
-                  navigate(`/posts/${post.id}`);
+                  router.push(`/home/post/${post.id}`);
                 }}
               />
             ))

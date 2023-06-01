@@ -9,7 +9,9 @@ const Container = styled.div`
   margin: 0 auto;
 
   min-height: 100%;
+
   max-width: ${(props) => props.theme.breakpoints.md}px;
+  width: 100%;
 `;
 
 export { Container };

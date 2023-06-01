@@ -1,22 +1,24 @@
-import Button from "../../components/Button";
-import Input from "../../components/Input";
+"use client";
+
+import Button from "../../../components/Button";
+import Input from "../../../components/Input";
 import { Container } from "./styles";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useHandleApiRequest } from "../../hooks/useHandleApiRequest";
-import Form from "../../components/Form";
+import { useHandleApiRequest } from "../../../hooks/useHandleApiRequest";
+import Form from "../../../components/Form";
 
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
-import useApi from "../../hooks/useApi";
+import useApi from "../../../hooks/useApi";
 import postFormSchema, {
   PostFormType,
-} from "../../utils/schemas/postFormSchema";
-import TextArea from "../../components/TextArea";
+} from "../../../utils/schemas/postFormSchema";
+import TextArea from "../../../components/TextArea";
 
 export default function CreatePost() {
   const api = useApi();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const { loading, execute } = useHandleApiRequest();
 
@@ -30,13 +32,9 @@ export default function CreatePost() {
 
   const onSubmit: SubmitHandler<PostFormType> = async (body) => {
     try {
-      await execute(() =>
-        api.post("/posts", {
-          data: body,
-        })
-      );
+      await execute(() => api.post("/posts", body));
 
-      navigate("/");
+      router.replace("/home");
       alert("Post criado com sucesso");
     } catch (error) {
       alert("Erro ao criar post");
@@ -62,9 +60,9 @@ export default function CreatePost() {
         />
 
         <TextArea
-          {...register("description")}
+          {...register("content")}
           placeholder="Digite o conteúdo do post"
-          error={errors.description?.message}
+          error={errors.content?.message}
         />
 
         <Button type="submit" disabled={loading}>

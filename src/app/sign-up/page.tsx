@@ -1,21 +1,26 @@
+"use client";
+
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import { Container } from "./styles";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import signUpFormSchema, {
+  SignUpFormType,
+} from "../../utils/schemas/signUpFormSchema";
 import { useHandleApiRequest } from "../../hooks/useHandleApiRequest";
 import Form from "../../components/Form";
-import signInFormSchema, {
-  SignInFormType,
-} from "../../utils/schemas/signInFormSchema";
+
 import { useContext } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+
 import { AppContext } from "../../contexts/AppContext";
 import useApi from "../../hooks/useApi";
-import { useNavigate, Link } from "react-router-dom";
 
-export default function SignIn() {
+export default function SignUp() {
   const api = useApi();
-  const navigate = useNavigate();
+  const router = useRouter();
   const { setSession } = useContext(AppContext);
   const { loading, execute } = useHandleApiRequest();
 
@@ -23,19 +28,19 @@ export default function SignIn() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignInFormType>({
-    resolver: zodResolver(signInFormSchema),
+  } = useForm<SignUpFormType>({
+    resolver: zodResolver(signUpFormSchema),
   });
 
-  const onSubmit: SubmitHandler<SignInFormType> = async (body) => {
+  const onSubmit: SubmitHandler<SignUpFormType> = async (body) => {
     try {
-      const data = await execute(() => api.post("/auth/local", body));
+      const data = await execute(() => api.post("/auth/sign-up", body));
 
-      setSession(data?.jwt, data?.user);
-      navigate("/");
-      alert("Logado com sucesso");
+      setSession(data?.accessToken, data?.user);
+      router.replace("/");
+      alert("Conta criada com sucesso");
     } catch (error) {
-      alert("Erro ao logar na conta");
+      alert("Erro ao criar conta");
     }
   };
 
@@ -47,15 +52,21 @@ export default function SignIn() {
             marginBottom: 16,
           }}
         >
-          Entrar na conta
+          Crie uma conta
         </h1>
 
         <Input
-          {...register("identifier")}
-          placeholder="Digite e-mail ou nome de usuário"
+          {...register("name")}
+          placeholder="Nome do usuário"
           type="text"
-          error={errors.identifier?.message}
-          data-cy="identifier"
+          error={errors.name?.message}
+        />
+
+        <Input
+          {...register("email")}
+          placeholder="E-mail"
+          type="email"
+          error={errors.email?.message}
         />
 
         <Input
@@ -63,13 +74,12 @@ export default function SignIn() {
           placeholder="Senha"
           type="password"
           error={errors.password?.message}
-          data-cy="password"
         />
 
-        <Link to="/sign-up">Criar uma conta</Link>
+        <Link href="/sign-in">Já tenho uma conta</Link>
 
-        <Button type="submit" disabled={loading} data-cy="submit-button">
-          Entrar
+        <Button type="submit" disabled={loading}>
+          Criar conta
         </Button>
       </Form>
     </Container>

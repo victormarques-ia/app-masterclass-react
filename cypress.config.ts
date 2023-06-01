@@ -11,6 +11,7 @@ export default defineConfig({
     runMode: 1,
     openMode: 0,
   },
+
   chromeWebSecurity: false,
   env: {
     codeCoverage: {

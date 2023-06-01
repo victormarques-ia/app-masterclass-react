@@ -1,27 +1,34 @@
-import { useCallback, useContext, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import useApi from "../../hooks/useApi";
-import { useHandleApiRequest } from "../../hooks/useHandleApiRequest";
-import PostInterface from "../../interfaces/PostInterface";
-import { Container, DeletePostButton, Divider, SubContainer } from "./styles";
-import { useNavigate } from "react-router-dom";
-import { AppContext } from "../../contexts/AppContext";
+"use client";
 
-export default function Post() {
+import { useCallback, useContext, useEffect } from "react";
+
+import useApi from "../../../../hooks/useApi";
+import { useHandleApiRequest } from "../../../../hooks/useHandleApiRequest";
+import PostInterface from "../../../../interfaces/PostInterface";
+import { Container, DeletePostButton, Divider, SubContainer } from "./styles";
+
+import { AppContext } from "../../../../contexts/AppContext";
+import { useRouter } from "next/navigation";
+
+interface PostProps {
+  params: {
+    id: string;
+  };
+}
+
+export default function Post({ params }: PostProps) {
   const { user } = useContext(AppContext);
 
   const api = useApi();
 
-  const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>();
+  const router = useRouter();
+  const { id } = params;
 
   const {
     loading: loadingPost,
     execute: executeGetPost,
     data: postData,
-  } = useHandleApiRequest<{
-    data: PostInterface;
-  }>();
+  } = useHandleApiRequest<PostInterface>();
 
   const { loading: loadingDeletePost, execute: executeDeletePost } =
     useHandleApiRequest();
@@ -39,11 +46,11 @@ export default function Post() {
       await executeDeletePost(() => api.delete(`/posts/${id}`));
 
       alert("Post deletado com sucesso!");
-      navigate("/");
+      router.back();
     } catch (error) {
       alert("Erro ao deletar post");
     }
-  }, [api, executeDeletePost, id, navigate]);
+  }, [api, executeDeletePost, id, router]);
 
   useEffect(() => {
     getPost();
@@ -57,12 +64,10 @@ export default function Post() {
     <Container>
       {postData ? (
         <>
-          <h1>{postData.data.attributes.title}</h1>
+          <h1>{postData.title}</h1>
           <SubContainer>
-            <h5>
-              {new Date(postData.data.attributes.createdAt).toLocaleString()}
-            </h5>
-            {user?.id === postData.data?.user?.id && (
+            <h5>{new Date(postData.createdAt).toLocaleString()}</h5>
+            {user?.id === postData.authorId && (
               <DeletePostButton
                 onClick={deletePost}
                 disabled={loadingDeletePost}
@@ -73,7 +78,7 @@ export default function Post() {
           </SubContainer>
 
           <Divider />
-          <p>{postData.data.attributes.description}</p>
+          <p>{postData.content}</p>
         </>
       ) : (
         <p>Post não encontrado!</p>
