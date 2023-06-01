@@ -37,3 +37,7 @@ cypress/downloads
 .env.development
 .env.staging
 .env.production
+
+# next.js
+/.next/
+/out/

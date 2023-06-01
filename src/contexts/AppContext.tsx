@@ -8,7 +8,7 @@ interface AppContextProps {
   clearSession: () => void;
 }
 
-const AppContext = createContext<AppContextProps>({} as AppContextProps);
+export const AppContext = createContext<AppContextProps>({} as AppContextProps);
 
 interface AppProviderProps {
   children: ReactNode;
@@ -66,4 +66,4 @@ function AppProvider({ children }: AppProviderProps) {
   );
 }
 
-export { AppContext, AppProvider };
+export default AppProvider;

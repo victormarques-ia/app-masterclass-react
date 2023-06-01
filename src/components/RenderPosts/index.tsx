@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useEffect, useMemo } from "react";
 import useApi from "../../hooks/useApi";
 import { useHandleApiRequest } from "../../hooks/useHandleApiRequest";
@@ -5,7 +7,7 @@ import PostItem from "../PostItem";
 import { Container } from "./styles";
 import PostInterface from "../../interfaces/PostInterface";
 
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 interface RenderPostsProps {
   me?: boolean;
@@ -15,7 +17,7 @@ export default function RenderPosts({ me = false }: RenderPostsProps) {
   const api = useApi();
   const { loading, execute, data } = useHandleApiRequest<PostInterface[]>();
 
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const getPosts = useCallback(async () => {
     try {
@@ -29,7 +31,7 @@ export default function RenderPosts({ me = false }: RenderPostsProps) {
     getPosts();
   }, [getPosts]);
 
-  // Memoize the sorted posts for avoiding unnecessary re-renders
+  // Memorize the sorted posts for avoiding unnecessary re-renders
   const sortedPosts = useMemo(() => {
     if (!data) return [];
 
@@ -52,7 +54,7 @@ export default function RenderPosts({ me = false }: RenderPostsProps) {
                 content={post.content}
                 date={post.createdAt}
                 onClick={() => {
-                  navigate(`/posts/${post.id}`);
+                  router.push(`/home/post/${post.id}`);
                 }}
               />
             ))

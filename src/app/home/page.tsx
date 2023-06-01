@@ -1,3 +1,5 @@
+"use client";
+
 import RenderPosts from "../../components/RenderPosts";
 import { Container } from "./styles";
 

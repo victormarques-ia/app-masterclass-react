@@ -6,7 +6,7 @@ describe("Sign In", () => {
     cy.get('[data-cy="password"]').type("Test@123");
     cy.get('[data-cy="submit-button"]').click();
 
-    cy.get('a[href="/my-posts"]').should("exist");
+    cy.get('a[href="/home/my-posts"]').should("exist");
   });
 
   it("should not sign in", () => {
@@ -17,6 +17,6 @@ describe("Sign In", () => {
 
     cy.wait(1000);
 
-    cy.get('a[href="/my-posts"]').should("not.exist");
+    cy.get('a[href="/home/my-posts"]').should("not.exist");
   });
 });
