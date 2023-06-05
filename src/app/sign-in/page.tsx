@@ -55,7 +55,7 @@ export default function SignIn() {
 
         <Input
           {...register("email")}
-          placeholder="Digite e-mail ou nome de usuário"
+          placeholder="Digite o e-mail"
           type="text"
           error={errors.email?.message}
           data-cy="email"

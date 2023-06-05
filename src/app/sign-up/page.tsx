@@ -57,7 +57,7 @@ export default function SignUp() {
 
         <Input
           {...register("name")}
-          placeholder="Nome do usuário"
+          placeholder="Nome"
           type="text"
           error={errors.name?.message}
         />
